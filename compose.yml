@@ -1,0 +1,62 @@
+services:
+  schedule-of-the-valley:
+    image: nginxinc/nginx-unprivileged:1.30.5
+    restart: unless-stopped
+
+    expose:
+      - "8080"
+
+    volumes:
+      - type: bind
+        source: ./dist
+        target: /usr/share/nginx/html
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+        bind:
+          create_host_path: false
+
+    # NGINX-unprivileged stores its PID/temp data under /tmp.
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+
+    # Harden the container.
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    pids_limit: 100
+    mem_limit: 128m
+    cpus: 1.0
+
+    stop_grace_period: 10s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    networks:
+      - proxy
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.schedule.rule=Host(`${SCHEDULE_HOST}`)"
+      - "traefik.http.routers.schedule.entrypoints=websecure"
+      - "traefik.http.routers.schedule.tls=true"
+      - "traefik.http.routers.schedule.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.schedule.middlewares=secure-headers@file,rate-limit@file"
+      - "traefik.http.services.schedule.loadbalancer.server.port=8080"
+
+networks:
+  proxy:
+    external: true
+    name: proxy
