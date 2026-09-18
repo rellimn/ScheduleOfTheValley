@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <meta name="description" content="">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+
+    <title>Schedule of the Valley</title>
+</head>
+
+<body>
+<!-- Header -->
+<header class="site-header">
+    <nav class="container" aria-label="Main navigation">
+        <ul>
+            <li><strong>Schedule of the Valley</strong></li>
+        </ul>
+        <ul></ul>
+        <ul>
+            <li>
+                <button
+                        class="theme-toggle outline secondary"
+                        id="theme-toggle"
+                        type="button"
+                        aria-label="Switch to dark mode"
+                        title="Switch to dark mode"
+                >
+                    <i id="theme-icon"></i>
+                </button>
+            </li>
+            <li>
+                <button
+                        class="theme-toggle outline secondary"
+                        id="preferences"
+                        type="button"
+                        aria-label="Preferences"
+                        title="Preferences"
+                >
+                    <i data-lucide="settings"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</header>
+<dialog id="preferences-dialog">
+    <article>
+        <header>
+            <button
+                    aria-label="Close preferences"
+                    class="close"
+                    type="button"
+                    id="close-preferences"
+            ></button>
+            <h4>Preferences</h4>
+        </header>
+        <form id="preferences-form">
+            <label>
+                Header
+                <input
+                        name="headerText"
+                        id="header-text"
+                        type="text"
+                        autocomplete="off"
+                >
+            </label>
+
+            <label>
+                Time prefix
+                <input
+                        name="timePrefix"
+                        id="time-prefix"
+                        type="text"
+                        autocomplete="off"
+                >
+            </label>
+
+            <label>
+                Missing day text
+                <input
+                        name="missingDatePlaceholder"
+                        id="missing-date-placeholder"
+                        type="text"
+                        autocomplete="off"
+                >
+            </label>
+
+            <label>
+                <input
+                        name="outputMissingDates"
+                        id="output-missing-dates"
+                        type="checkbox"
+                        role="switch"
+                >
+                Show missing days
+            </label>
+
+            <fieldset>
+                <legend>Day labels</legend>
+                <div class="day-map-grid">
+                    <label>
+                        Monday
+                        <input name="dayMap" data-day-index="0" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Tuesday
+                        <input name="dayMap" data-day-index="1" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Wednesday
+                        <input name="dayMap" data-day-index="2" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Thursday
+                        <input name="dayMap" data-day-index="3" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Friday
+                        <input name="dayMap" data-day-index="4" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Saturday
+                        <input name="dayMap" data-day-index="5" type="text" autocomplete="off">
+                    </label>
+                    <label>
+                        Sunday
+                        <input name="dayMap" data-day-index="6" type="text" autocomplete="off">
+                    </label>
+                </div>
+            </fieldset>
+
+            <label>
+                Footer
+                <textarea
+                        name="footerText"
+                        id="footer-text"
+                        autocomplete="off"
+                        rows="4"
+                ></textarea>
+            </label>
+        </form>
+    </article>
+</dialog>
+<!-- Main -->
+<main class="container">
+    <div class="grid">
+        <div>
+            <h4>Schedule Details</h4>
+            <form id="main-form">
+                <label for="week">
+                    Week
+                    <span class="week-picker-group">
+                        <input
+                                id="week"
+                                type="text"
+                                autocomplete="off"
+                        >
+                        <button
+                                id="current-week"
+                                type="button"
+                                class="secondary outline week-jump"
+                                aria-label="Jump to current week"
+                                title="Jump to current week"
+                                data-tooltip="Current week"
+                        >
+                            <i data-lucide="calendar">Current Week</i>
+                        </button>
+                        <button
+                                id="next-week"
+                                type="button"
+                                class="secondary outline week-jump"
+                                aria-label="Jump to next week"
+                                title="Jump to next week"
+                                data-tooltip="Next week"
+                        >
+                            <i data-lucide="calendar-chevrons-right">Next Week</i>
+                        </button>
+                    </span>
+                </label>
+
+                <label>
+                    Description
+                    <textarea
+                            name="description"
+                            id="description"
+                            type="text"
+                            autocomplete="off"
+                    ></textarea>
+                </label>
+
+                <label>Streams</label>
+                <div id="streams">
+                </div>
+                <button type="button" data-tooltip="Add Stream" id="add-stream"><i data-lucide="plus">Add Stream</i>
+                </button>
+
+            </form>
+        </div>
+        <template id="stream-template">
+            <div class="stream-container">
+                <div role="group">
+                    <div>
+                        <div role="group">
+                            <select class="day-input" name="streamDay" aria-label="Stream Day">
+                                <option selected>Monday</option>
+                                <option>Tuesday</option>
+                                <option>Wednesday</option>
+                                <option>Thursday</option>
+                                <option>Friday</option>
+                                <option>Saturday</option>
+                                <option>Sunday</option>
+                            </select>
+                            <input class="time-input" type="time" name="streamTime" aria-label="Stream Time"
+                                   value="12:00">
+                        </div>
+                        <input class="note-input" type="text" name="streamNotes" aria-label="Stream Notes"
+                               placeholder="Notes...">
+                    </div>
+                    <button type="button" class="secondary remove-stream" name="removeStream" data-tooltip="Remove Stream"><i data-lucide="x">Remove Stream</i></button>
+                </div>
+            </div>
+        </template>
+        <div>
+            <h4>Preview</h4>
+            <article id="preview-text"></article>
+            <button id="copy-markdown" data-tooltip="Copy Markdown"><i data-lucide="copy">Copy Markdown</i></button>
+        </div>
+    </div>
+</main>
+<script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

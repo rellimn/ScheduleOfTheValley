@@ -1,0 +1,95 @@
+:root {
+    --pico-form-element-spacing-vertical: 0.5rem;
+    --pico-form-element-spacing-horizontal: 1rem;
+    --pico-spacing: .75rem;
+    --pico-typography-spacing-vertical: 1rem;
+    --pico-line-height: 1.;
+    --pico-block-spacing-vertical: 1rem;
+}
+
+time.discord-timestamp {
+    display: inline-block;
+    padding: 0 0.2em;
+    border-radius: var(--pico-border-radius);
+
+    color: var(--pico-color);
+    background: color-mix(
+            in srgb,
+            var(--pico-color) 10%,
+            transparent
+    );
+
+    font-size: 0.875em;
+    line-height: 1.3;
+    white-space: nowrap;
+    cursor: default;
+}
+
+time.discord-timestamp:hover {
+    background: color-mix(
+            in srgb,
+            var(--pico-color) 16%,
+            transparent
+    );
+}
+
+#preview-text {
+    margin-top: calc(3*var(--pico-spacing));
+}
+
+#preview-text small {
+    color: color-mix(
+            in srgb,
+            var(--pico-color) 70%,
+            transparent
+    );
+}
+
+.week-picker-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 0.5rem;
+    align-items: start;
+}
+
+.week-picker-group input {
+    min-width: 0;
+}
+
+.week-jump {
+    width: 2.75rem;
+    padding-inline: 0;
+}
+
+dialog article {
+    width: min(42rem, calc(100vw - 2rem));
+}
+
+.day-map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0 0.75rem;
+}
+
+.stream-container {
+    --pico-spacing: 0;
+    margin-bottom: 1rem;
+}
+
+@keyframes ping {
+    0% { transform: scale(1); opacity: 1; }
+    75%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.button-clicked {
+    animation: ping 0.5s ease-out 0s 1 normal;
+}
+
+.remove-stream {
+    padding: .5rem;
+}
