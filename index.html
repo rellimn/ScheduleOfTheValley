@@ -16,6 +16,21 @@
     <meta name="theme-color" content="#fafafa">
 
     <title>Schedule of the Valley</title>
+
+<!--    Set theme from storage before app draws to prevent flashing -->
+    <script>
+    try {
+    const saved = localStorage.getItem("SOTV-state")
+    const theme = saved ? JSON.parse(saved).theme : localStorage.getItem("theme")
+
+    if (theme === "dark" || theme === "light") {
+    document.documentElement.dataset.theme = theme
+    document.documentElement.style.colorScheme = theme
+    }
+    } catch {
+    // Use the browser/system default if saved state is unavailable.
+    }
+    </script>
 </head>
 
 <body>
