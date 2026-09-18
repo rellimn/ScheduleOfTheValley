@@ -1,34 +1,24 @@
 services:
   schedule-of-the-valley:
-    image: nginxinc/nginx-unprivileged:1.30.5
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: schedule-of-the-valley:latest
+
     restart: unless-stopped
 
     expose:
       - "8080"
 
-    volumes:
-      - type: bind
-        source: ./dist
-        target: /usr/share/nginx/html
-        read_only: true
-        bind:
-          create_host_path: false
-
-      - type: bind
-        source: ./nginx.conf
-        target: /etc/nginx/nginx.conf
-        read_only: true
-        bind:
-          create_host_path: false
-
-    # NGINX-unprivileged stores its PID/temp data under /tmp.
     tmpfs:
       - /tmp:size=32m,mode=1777
 
-    # Harden the container.
     read_only: true
+
     cap_drop:
       - ALL
+
     security_opt:
       - no-new-privileges:true
 
